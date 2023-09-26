@@ -1,0 +1,67 @@
+// ----------------------------------
+// RSDK Project: Sonic 2
+// Script Description: Water Splash Object
+// Script Author: Christian Whitehead/Simon Thomley
+// Unpacked by Rubberduckycooly's script unpacker
+// ----------------------------------
+
+// ========================
+// Aliases
+// ========================
+
+private alias object.value0 : object.timer
+
+
+// ========================
+// Events
+// ========================
+
+event ObjectUpdate
+	object.iypos = stage.waterLevel
+
+	object.timer++
+	if object.timer > 3
+		object.timer = 0
+		object.frame++
+		if object.frame > 8
+			object.type = TypeName[Blank Object]
+		end if
+	end if
+end event
+
+
+event ObjectDraw
+	DrawSprite(object.frame)
+end event
+
+
+event ObjectStartup
+	LoadSpriteSheet("CPZ/Objects3.gif")
+	SpriteFrame(-16, -16, 32, 16, 1, 111)
+	SpriteFrame(-16, -32, 32, 32, 34, 95)
+	SpriteFrame(-16, -32, 32, 32, 67, 95)
+	SpriteFrame(-16, -32, 32, 32, 100, 95)
+	SpriteFrame(-16, -32, 32, 32, 133, 95)
+	SpriteFrame(-16, -24, 32, 24, 166, 103)
+	SpriteFrame(-16, -16, 32, 16, 199, 111)
+	SpriteFrame(-16, -16, 32, 16, 223, 77)
+	SpriteFrame(-16, -16, 32, 16, 223, 94)
+end event
+
+
+// ========================
+// Editor Events
+// ========================
+
+
+event RSDKDraw
+	DrawSprite(0)
+end event
+
+
+event RSDKLoad
+	LoadSpriteSheet("CPZ/Objects3.gif")
+	SpriteFrame(-16, -31, 31, 31, 116, 96)
+	
+	SetVariableAlias(ALIAS_VAR_PROPVAL, "unused")
+end event
