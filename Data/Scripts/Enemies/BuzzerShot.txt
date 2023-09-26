@@ -1,0 +1,83 @@
+// ----------------------------------
+// RSDK Project: Sonic 2
+// Script Description: Buzzer Shot Object
+// Script Author: Christian Whitehead/Simon Thomley
+// Unpacked by Rubberduckycooly's script unpacker
+// ----------------------------------
+
+// ========================
+// Events
+// ========================
+
+event ObjectUpdate
+	object.xpos += object.xvel
+	object.ypos += object.yvel
+
+	temp0 = screen.xcenter
+	temp0 += 32
+	temp1 = screen.ycenter
+	temp1 += 32
+	CheckCameraProximity(object.ixpos, object.iypos, temp0, temp1)
+	if checkResult == false
+		object.type = TypeName[Blank Object]
+	end if
+	
+	foreach (GROUP_PLAYERS, currentPlayer, ACTIVE_ENTITIES)
+		BoxCollisionTest(C_TOUCH, object.entityPos, -8, -8, 8, 8, currentPlayer, C_BOX, C_BOX, C_BOX, C_BOX)
+		if checkResult == true
+			CallFunction(Player_ProjectileHit)
+		end if
+	next
+
+	object.animationTimer++
+	if object.animationTimer == 4
+		object.frame = 1
+	else
+		if object.animationTimer == 8
+			object.animationTimer = 0
+			object.frame = 0
+		end if
+	end if
+end event
+
+
+event ObjectDraw
+	DrawSpriteFX(object.frame, FX_FLIP, object.xpos, object.ypos)
+end event
+
+
+event ObjectStartup
+	CheckCurrentStageFolder("Zone01")
+	if checkResult == true
+		LoadSpriteSheet("EHZ/Objects.gif")
+		SpriteFrame(-4, -8, 8, 16, 16, 47)
+		SpriteFrame(-4, -8, 8, 16, 24, 47)
+	else
+		LoadSpriteSheet("MBZ/Objects.gif")
+		SpriteFrame(-12, -3, 8, 10, 66, 302)
+		SpriteFrame(-12, -3, 8, 10, 75, 302)
+	end if
+end event
+
+
+// ========================
+// Editor Events
+// ========================
+
+event RSDKDraw
+	DrawSprite(0)
+end event
+
+
+event RSDKLoad
+	CheckCurrentStageFolder("Zone01")
+	if checkResult == true
+		LoadSpriteSheet("EHZ/Objects.gif")
+		SpriteFrame(-12, -3, 8, 10, 1, 50)
+	else
+		LoadSpriteSheet("MBZ/Objects.gif")
+		SpriteFrame(-12, -3, 8, 10, 66, 302)
+	end if
+	
+	SetVariableAlias(ALIAS_VAR_PROPVAL, "unused")
+end event
